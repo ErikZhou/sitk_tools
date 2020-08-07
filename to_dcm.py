@@ -19,6 +19,10 @@ def writeSlices(series_tag_values, img, i):
     image_slice.SetMetaData("0008|0012", time.strftime("%Y%m%d")) # Instance Creation Date
     image_slice.SetMetaData("0008|0013", time.strftime("%H%M%S")) # Instance Creation Time
 
+    #window width & center using Chest as default 
+    image_slice.SetMetaData("0028|1050", '40')  
+    image_slice.SetMetaData("0028|1051", '400') 
+
     # Setting the type to CT preserves the slice location.
     image_slice.SetMetaData("0008|0060", "CT")  # set the type to CT so the thickness is carried over
 
@@ -53,6 +57,7 @@ direction = img.GetDirection()
 series_tag_values = [("0008|0031",modification_time), # Series Time
                   ("0008|0021",modification_date), # Series Date
                   ("0008|0008","DERIVED\\SECONDARY"), # Image Type
+                  ("0020|000D","1.2.826.0.1.3680043.2.1125"), # Study Instance UID by Eric 
                   ("0020|000e", "1.2.826.0.1.3680043.2.1125."+modification_date+".1"+modification_time), # Series Instance UID
                   ("0020|0037", '\\'.join(map(str, (direction[0], direction[3], direction[6],# Image Orientation (Patient)
                                                     direction[1],direction[4],direction[7])))),
